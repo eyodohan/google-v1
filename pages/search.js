@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import ImageResults from '../components/ImageResults';
 import SearchHeader from '../components/SearchHeader';
 import SearchResults from '../components/SearchResults';
 import Response from '../Response';
@@ -15,15 +16,19 @@ const search = ({ results }) => {
       {/* search header */}
       <SearchHeader />
 
-      {/* search result */}
-      <SearchResults results={results} />
+      {/* search web and images result */}
+      {router.query.searchType === 'image' ? (
+        <ImageResults results={results} />
+      ) : (
+        <SearchResults results={results} />
+      )}
     </div>
   );
 };
 
 export async function getServerSideProps(context) {
   const startIndex = context.query.start || '1';
-  const mockData = true;
+  const mockData = false;
   const data = mockData
     ? Response
     : await fetch(
